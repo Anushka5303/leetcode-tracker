@@ -25,11 +25,11 @@ public:
                 i++;
             }
 
-            if(rem==0){
-                m.second=0;
-            }else{
-                m.second = 1;
-            }
+            // if(rem==0){
+            //     m.second=0;
+            // }else{
+            //     m.second = 1;
+            // }
 
         }
 
