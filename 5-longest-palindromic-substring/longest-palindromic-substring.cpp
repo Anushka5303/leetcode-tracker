@@ -1,36 +1,48 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-        
-        vector<vector<bool>> dp(s.size(),vector<bool>(s.size(),false));
-        int maxlen = 1;
-        int start = 0;
-        for(int i=0; i<s.size(); i++) dp[i][i] = true;
+        int n = s.size();
 
-        for(int i=0; i<s.size()-1; i++){
-            if(s[i]==s[i+1]) {
-                dp[i][i+1] = true;
-                maxlen = 2;
-                start = i;
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
+
+        int maxLen = 1;
+        int startIndex = 0;
+
+        // Length = 1 (single characters)
+        for(int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+
+        // Length = 2
+        for(int i = 0; i < n - 1; i++) {
+            if(s[i] == s[i + 1]) {
+                dp[i][i + 1] = true;
+
+                if(maxLen < 2) {
+                    maxLen = 2;
+                    startIndex = i;
+                }
             }
         }
 
-        for(int i=3; i<=s.size(); i++){
+        // Length >= 3
+        for(int length = 3; length <= n; length++) {
 
-            for(int j=0; j<=s.size()-i; j++){
+            for(int start = 0; start <= n - length; start++) {
 
-                int a = j+i-1;
-                if(s[j]==s[a] && dp[j+1][a-1]){
-                    dp[j][a] = true;
+                int end = start + length - 1;
 
-                    if(i>maxlen){
-                        maxlen = i;
-                        start = j;
+                if(s[start] == s[end] && dp[start + 1][end - 1]) {
+                    dp[start][end] = true;
+
+                    if(length > maxLen) {
+                        maxLen = length;
+                        startIndex = start;
                     }
                 }
             }
-
         }
-        return s.substr(start,maxlen);
+
+        return s.substr(startIndex, maxLen);
     }
 };
