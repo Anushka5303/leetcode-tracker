@@ -1,27 +1,27 @@
 class Solution {
 public:
     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
-        int i = obstacleGrid.size();
-        int j = obstacleGrid[0].size();
-        
-        vector<vector<int>> dp(i,vector<int>(j,-1));
-        if(dp[i-1][j-1]==1) return  0;
-        dp[i-1][j-1]=1;
-        return magic(obstacleGrid,i,j,0,0,dp);
-    }
-private:
-    int magic(vector<vector<int>>& obstacleGrid, int m, int n, int i, int j,
-    vector<vector<int>>& dp){
-        
-        if(i==m-1 && j==n-1 && obstacleGrid[i][j]!=1) return dp[i][j];
+        int n = obstacleGrid.size();
+        int m = obstacleGrid[0].size();
 
-        if(i==m || j==n || obstacleGrid[i][j] == 1) return 0;
+        vector<vector<int>> dp(n,vector<int>(m,0));
 
-       if(dp[i][j] != -1) return dp[i][j];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(i==0 && j==0 && obstacleGrid[i][j]!=1) dp[i][j]=1;
+                else if(obstacleGrid[i][j]==1) dp[i][j]=0;
+                else{
 
-        int right = magic(obstacleGrid,m,n,i+1,j,dp);
-        int down = magic(obstacleGrid,m,n,i,j+1,dp);
+                int right=0,down=0;
 
-        return dp[i][j]=right+down;
+                if(i>0) down = dp[i-1][j];
+                if(j>0) right = dp[i][j-1];
+
+                dp[i][j] = down+right;
+                }
+            }
+        }
+
+        return dp[n-1][m-1];
     }
 };
