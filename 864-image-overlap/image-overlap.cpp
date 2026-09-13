@@ -1,38 +1,35 @@
 class Solution {
 public:
-    int largestOverlap(vector<vector<int>>& img1, vector<vector<int>>& img2) {
+    int largestOverlap(vector<vector<int>>& img1, vector<vector<int>>& img2) 
+    {
+        vector<pair<int,int>> one1, one2;
+
         int n = img1.size();
+        int m = img1[0].size();
 
-        vector<pair<int, int>> ones1, ones2;
-
-        // Store coordinates of all 1s
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (img1[i][j] == 1)
-                    ones1.push_back({i, j});
-
-                if (img2[i][j] == 1)
-                    ones2.push_back({i, j});
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(img1[i][j]==1){
+                    one1.push_back({i,j});
+                }
+                if(img2[i][j]==1){
+                    one2.push_back({i,j});
+                }
             }
         }
-
-        map<pair<int, int>, int> freq;
-
+        map<pair<int,int>,int> mp;
         int ans = 0;
+        for(auto one11: one1){
+            for(auto one22: one2){
+                int dr = one22.first - one11.first;
+                int dc = one22.second - one11.second;
 
-        // Try every pair of 1s
-        for (auto p1 : ones1) {
-            for (auto p2 : ones2) {
+                mp[{dr,dc}]++;
 
-                int dr = p2.first - p1.first;
-                int dc = p2.second - p1.second;
-
-                freq[{dr, dc}]++;
-
-                ans = max(ans, freq[{dr, dc}]);
+                ans = max(ans,mp[{dr,dc}]);
             }
         }
-
+        
         return ans;
     }
 };
